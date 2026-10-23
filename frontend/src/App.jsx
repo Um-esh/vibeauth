@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
-import PersonaSelector, { PERSONA_DEFAULTS } from './components/PersonaSelector';
+import PersonaSelector, { PERSONA_DEFAULTS, PERSONAS } from './components/PersonaSelector';
 import AttributeSliders from './components/AttributeSliders';
 import TextInputPanel from './components/TextInputPanel';
 import OutputPanel from './components/OutputPanel';
@@ -9,6 +9,7 @@ import PreservationReport from './components/PreservationReport';
 import SourceAnalysisCard from './components/SourceAnalysisCard';
 import HistoryDrawer from './components/HistoryDrawer';
 import ErrorBanner from './components/ErrorBanner';
+import SendModal from './components/SendModal';
 import { api } from './services/api';
 
 export default function App() {
@@ -23,6 +24,7 @@ export default function App() {
   const [rewrittenText, setRewrittenText] = useState('');
   const [translatedText, setTranslatedText] = useState('');
   const [isTranslating, setIsTranslating] = useState(false);
+  const [isSendModalOpen, setIsSendModalOpen] = useState(false);
   const [diff, setDiff] = useState(null);
   const [preservationReport, setPreservationReport] = useState(null);
   const [sourceAnalysis, setSourceAnalysis] = useState(null);
@@ -179,6 +181,9 @@ export default function App() {
     }
   };
 
+  const targetPersonaTitle = PERSONAS.find((p) => p.id === selectedPersona)?.title || 'Audience';
+  const textToSend = (translatedText && selectedLanguage !== 'en') ? translatedText : rewrittenText;
+
   return (
     <div className="app-container">
       <Header
@@ -218,6 +223,9 @@ export default function App() {
                 rewrittenText={rewrittenText}
                 translatedText={translatedText}
                 targetLanguage={selectedLanguage}
+                targetPersonaTitle={targetPersonaTitle}
+                selectedPersona={selectedPersona}
+                onOpenSendModal={() => setIsSendModalOpen(true)}
                 onTranslate={handleTranslate}
                 isTranslating={isTranslating}
                 isLoading={isLoading}
@@ -265,6 +273,14 @@ export default function App() {
           />
         )}
       </main>
+
+      <SendModal
+        isOpen={isSendModalOpen}
+        onClose={() => setIsSendModalOpen(false)}
+        targetPersonaTitle={targetPersonaTitle}
+        transformedText={textToSend}
+        selectedPersona={selectedPersona}
+      />
     </div>
   );
 }

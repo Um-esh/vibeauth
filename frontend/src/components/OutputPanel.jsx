@@ -5,6 +5,9 @@ export default function OutputPanel({
   rewrittenText,
   translatedText,
   targetLanguage,
+  targetPersonaTitle = 'Audience',
+  selectedPersona = 'executive',
+  onOpenSendModal,
   onTranslate,
   isTranslating,
   isLoading,
@@ -99,6 +102,15 @@ export default function OutputPanel({
             >
               View Diff →
             </button>
+            <button
+              type="button"
+              className="btn-primary btn-sm"
+              style={{ background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)', borderColor: '#059669', color: '#fff', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.35rem' }}
+              onClick={onOpenSendModal}
+            >
+              <span>📤</span>
+              <span>Send to {targetPersonaTitle}</span>
+            </button>
           </div>
         )}
       </div>
@@ -128,6 +140,34 @@ export default function OutputPanel({
           </div>
         )}
       </div>
+
+      {safeText && (
+        <div style={{ marginTop: '0.85rem' }}>
+          <button
+            type="button"
+            className="btn-primary"
+            style={{
+              width: '100%',
+              background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+              borderColor: '#059669',
+              color: '#fff',
+              fontSize: '0.92rem',
+              fontWeight: 600,
+              padding: '0.65rem 1rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.5rem',
+              boxShadow: '0 2px 8px rgba(16, 185, 129, 0.25)',
+              cursor: 'pointer'
+            }}
+            onClick={onOpenSendModal}
+          >
+            <span>📤</span>
+            <span>Send to {targetPersonaTitle} (WhatsApp / Email)</span>
+          </button>
+        </div>
+      )}
 
       {safeText && (
         <div style={{ marginTop: '0.75rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>

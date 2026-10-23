@@ -5,6 +5,7 @@ from backend.app.extensions import db
 from backend.app.api.health import health_bp
 from backend.app.api.rewrite import rewrite_bp
 from backend.app.api.history import history_bp
+from backend.app.api.dispatch import dispatch_bp
 from backend.app.schemas.responses import error_response
 from backend.app.utils.logging_config import setup_logger
 
@@ -29,6 +30,7 @@ def create_app(config_class=Config) -> Flask:
     app.register_blueprint(health_bp, url_prefix='/api')
     app.register_blueprint(rewrite_bp, url_prefix='/api')
     app.register_blueprint(history_bp, url_prefix='/api')
+    app.register_blueprint(dispatch_bp, url_prefix='/api')
 
     # Register standard error handlers
     @app.errorhandler(404)

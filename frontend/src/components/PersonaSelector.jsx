@@ -7,7 +7,7 @@ export const PERSONA_DEFAULTS = {
   casual: { formality: 1, conciseness: 4, friendliness: 5, energy: 5, persuasiveness: 3, technical_depth: 1 }
 };
 
-const PERSONAS = [
+export const PERSONAS = [
   {
     id: 'executive',
     title: 'Executive / C-Level',

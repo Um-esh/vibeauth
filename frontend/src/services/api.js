@@ -82,5 +82,32 @@ export const api = {
       method: 'DELETE',
     });
     return handleResponse(res);
+  },
+
+  async parseVcf(vcfContent) {
+    const res = await fetch(`${BASE_URL}/contacts/parse-vcf`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ vcf_content: vcfContent }),
+    });
+    return handleResponse(res);
+  },
+
+  async testSmtp(smtpConfig) {
+    const res = await fetch(`${BASE_URL}/email/test-smtp`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ smtp_config: smtpConfig }),
+    });
+    return handleResponse(res);
+  },
+
+  async sendEmail({ to_email, subject, body, smtp_config }) {
+    const res = await fetch(`${BASE_URL}/email/send`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ to_email, subject, body, smtp_config }),
+    });
+    return handleResponse(res);
   }
 };
