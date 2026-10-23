@@ -41,11 +41,12 @@ COPY --from=frontend-builder /app/frontend/dist ./frontend/dist
 COPY backend/ ./backend/
 COPY .env.example ./.env
 
-# Pre-download ML models into image cache so runtime is 100% offline
+# Pre-train lightweight classifiers & download ML models into image cache so runtime is 100% offline
+RUN python backend/scripts/train_classifier.py || true
 RUN python backend/scripts/download_models.py || true
 
 # Expose container port
 EXPOSE 5000
 
 # Run Gunicorn production server with threading support for ML inference
-CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${PORT:-5000} --workers 1 --threads 4 --timeout 120 backend.run:app"]
+CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${PORT:-5000} --workers 1 --threads 2 --worker-tmp-dir /dev/shm --timeout 180 backend.run:app"]
