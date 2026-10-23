@@ -44,7 +44,9 @@ export default function TextInputPanel({
   return (
     <div className="card">
       <div className="card-header">
-        <span className="card-title">Original Text</span>
+        <span className="card-title">
+          <span>📝</span> Original Communication
+        </span>
         <select
           className="preset-select"
           onChange={handleSelectPreset}
@@ -88,15 +90,18 @@ export default function TextInputPanel({
           className="btn-primary"
           onClick={onSubmit}
           disabled={isLoading || !text.trim()}
-          style={{ width: '100%' }}
+          style={{ width: '100%', fontSize: '0.98rem', padding: '0.75rem 1.25rem' }}
         >
           {isLoading ? (
             <>
               <span className="spinner" />
-              <span>Running Local Inference Pipeline...</span>
+              <span>Executing Local AI Pipeline...</span>
             </>
           ) : (
-            <span>Transform Message</span>
+            <>
+              <span>✨</span>
+              <span>Transform Communication</span>
+            </>
           )}
         </button>
       </div>

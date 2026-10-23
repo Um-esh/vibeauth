@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Header({ activeTab, setActiveTab, systemStatus, historyCount }) {
+export default function Header({ activeTab, setActiveTab, systemStatus, historyCount, theme, toggleTheme }) {
   const isOffline = systemStatus?.offline_mode;
   const isReady = systemStatus?.models_ready;
 
@@ -8,7 +8,7 @@ export default function Header({ activeTab, setActiveTab, systemStatus, historyC
     <header className="header">
       <div className="header-inner">
         <div className="brand-wrapper">
-          <div className="logo-badge">IP</div>
+          <div className="logo-badge">⚡</div>
           <div>
             <h1 className="brand-title">Instant Persona & Communication Transformer</h1>
             <p className="brand-subtitle">Local NLP / ML Style Adaptation & Preservation Engine</p>
@@ -30,18 +30,30 @@ export default function Header({ activeTab, setActiveTab, systemStatus, historyC
           </button>
         </nav>
 
-        <div className="system-status-wrapper">
-          {isReady ? (
-            <div className={`status-indicator ${isOffline ? 'offline-badge' : ''}`}>
-              <span className={`status-dot ${isOffline ? 'offline' : ''}`} />
-              <span>{isOffline ? '100% Offline (Local ML)' : 'Local ML Engine Active'}</span>
-            </div>
-          ) : (
-            <div className="status-indicator" style={{ borderColor: '#eab308', color: '#facc15' }}>
-              <span className="status-dot" style={{ backgroundColor: '#facc15' }} />
-              <span>Initializing Models...</span>
-            </div>
-          )}
+        <div className="header-actions">
+          <button
+            type="button"
+            className="theme-toggle-btn"
+            onClick={toggleTheme}
+            title={theme === 'dark' ? 'Switch to Bright Luminous Mode' : 'Switch to Dark Mode'}
+            aria-label="Toggle brightness mode"
+          >
+            <span>{theme === 'dark' ? '☀️ Bright' : '🌙 Dark'}</span>
+          </button>
+
+          <div className="system-status-wrapper">
+            {isReady ? (
+              <div className={`status-indicator ${isOffline ? 'offline-badge' : ''}`}>
+                <span className={`status-dot ${isOffline ? 'offline' : ''}`} />
+                <span>{isOffline ? '100% Offline' : 'Local ML Engine'}</span>
+              </div>
+            ) : (
+              <div className="status-indicator" style={{ borderColor: '#eab308', color: '#b45309', background: '#fef3c7' }}>
+                <span className="status-dot" style={{ backgroundColor: '#f59e0b' }} />
+                <span>Initializing Models...</span>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </header>

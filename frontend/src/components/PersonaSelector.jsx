@@ -10,24 +10,28 @@ export const PERSONA_DEFAULTS = {
 export const PERSONAS = [
   {
     id: 'executive',
+    icon: '👔',
     title: 'Executive / C-Level',
     badge: 'Outcome & Impact',
     desc: 'Concise, professional, decision-focused. Prioritizes deadlines, risks, actions, and milestones without background fluff.'
   },
   {
     id: 'peer',
+    icon: '🤝',
     title: 'Supportive Peer',
     badge: 'Empathetic & Constructive',
     desc: 'Friendly, empathetic, and collaborative. Maintains shared commitments and tasks using constructive language.'
   },
   {
     id: 'legal',
+    icon: '⚖️',
     title: 'Legal & Compliance',
     badge: 'Formal & Unambiguous',
     desc: 'Precise, rigorous, and unambiguous. Safeguards all dates, restrictions, and mandatory obligations.'
   },
   {
     id: 'casual',
+    icon: '⚡',
     title: 'Gen-Z / Casual',
     badge: 'Modern & Energetic',
     desc: 'Conversational, energetic, and contemporary without forced cringe slang. Preserves core facts in a relaxed vibe.'
@@ -37,9 +41,14 @@ export const PERSONAS = [
 export default function PersonaSelector({ selectedPersona, onSelectPersona }) {
   return (
     <div>
-      <label className="card-title" style={{ marginBottom: '0.5rem', display: 'block' }}>
-        Target Persona
-      </label>
+      <div className="card-header" style={{ marginBottom: '0.85rem' }}>
+        <span className="card-title">
+          <span>🎭</span> Target Audience Persona
+        </span>
+        <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+          Click to adapt tone & writing attributes automatically
+        </span>
+      </div>
       <div className="personas-grid">
         {PERSONAS.map((p) => {
           const isSelected = selectedPersona === p.id;
@@ -50,12 +59,15 @@ export default function PersonaSelector({ selectedPersona, onSelectPersona }) {
               className={`persona-card ${isSelected ? 'selected' : ''}`}
               onClick={() => onSelectPersona(p.id)}
             >
+              <div className="persona-card-top">
+                <span className="persona-icon-avatar">{p.icon}</span>
+                <span className={`badge ${isSelected ? 'badge-primary' : 'badge-neutral'}`}>
+                  {p.badge}
+                </span>
+              </div>
               <div className="persona-title">
                 <span>{p.title}</span>
               </div>
-              <span className="badge badge-neutral" style={{ fontSize: '0.65rem', marginTop: '0.25rem' }}>
-                {p.badge}
-              </span>
               <p className="persona-desc">{p.desc}</p>
             </button>
           );

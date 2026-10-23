@@ -51,11 +51,13 @@ export default function OutputPanel({
   return (
     <div className="card">
       <div className="card-header">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-          <span className="card-title">Transformed Communication</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
+          <span className="card-title">
+            <span>✨</span> Transformed Communication
+          </span>
           {safeText && (
             <span className={`badge ${isHighRisk ? 'badge-danger' : 'badge-success'}`}>
-              {isHighRisk ? 'Preservation Warning' : 'Validated Output'}
+              {isHighRisk ? '⚠️ Preservation Warning' : '✓ Validated Output'}
             </span>
           )}
           {hasTranslation && (

@@ -18,6 +18,16 @@ export default function App() {
   const [selectedPersona, setSelectedPersona] = useState('executive');
   const [attributes, setAttributes] = useState(PERSONA_DEFAULTS.executive);
   const [selectedLanguage, setSelectedLanguage] = useState('en');
+  const [theme, setTheme] = useState(() => localStorage.getItem('app_theme') || 'light');
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('app_theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
+  };
 
   const [rewrittenText, setRewrittenText] = useState('');
   const [translatedText, setTranslatedText] = useState('');
@@ -189,6 +199,8 @@ export default function App() {
         setActiveTab={setActiveTab}
         systemStatus={systemStatus}
         historyCount={historyItems.length}
+        theme={theme}
+        toggleTheme={toggleTheme}
       />
 
       <main className="main-content">
