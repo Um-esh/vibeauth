@@ -1,4 +1,5 @@
-from flask import Flask
+from pathlib import Path
+from flask import Flask, send_from_directory, request
 from flask_cors import CORS
 from backend.app.config import Config
 from backend.app.extensions import db
@@ -13,7 +14,12 @@ logger = setup_logger('app_factory')
 
 def create_app(config_class=Config) -> Flask:
     """Application factory for the Flask backend."""
-    app = Flask(__name__)
+    dist_dir = Path(__file__).resolve().parent.parent.parent / 'frontend' / 'dist'
+    if dist_dir.exists():
+        app = Flask(__name__, static_folder=str(dist_dir), static_url_path='')
+    else:
+        app = Flask(__name__)
+
     app.config.from_object(config_class)
 
     # Initialize CORS
@@ -32,9 +38,22 @@ def create_app(config_class=Config) -> Flask:
     app.register_blueprint(history_bp, url_prefix='/api')
     app.register_blueprint(dispatch_bp, url_prefix='/api')
 
+    # Serve static frontend files in production
+    if dist_dir.exists():
+        @app.route('/', defaults={'path': ''})
+        @app.route('/<path:path>')
+        def serve_frontend(path):
+            if path and (dist_dir / path).exists():
+                return send_from_directory(str(dist_dir), path)
+            return send_from_directory(str(dist_dir), 'index.html')
+
     # Register standard error handlers
     @app.errorhandler(404)
     def not_found(e):
+        if request.path.startswith('/api'):
+            return error_response("Endpoint or resource not found.", status_code=404)
+        if dist_dir.exists():
+            return send_from_directory(str(dist_dir), 'index.html')
         return error_response("Endpoint or resource not found.", status_code=404)
 
     @app.errorhandler(405)
