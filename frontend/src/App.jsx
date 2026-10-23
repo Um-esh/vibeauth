@@ -212,8 +212,6 @@ export default function App() {
                 onClear={handleClear}
                 onSubmit={handleTransform}
                 isLoading={isLoading}
-                selectedLanguage={selectedLanguage}
-                onSelectLanguage={setSelectedLanguage}
                 error={error}
               />
               <OutputPanel

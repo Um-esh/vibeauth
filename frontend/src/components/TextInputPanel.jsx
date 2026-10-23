@@ -1,5 +1,4 @@
 import React from 'react';
-import LanguageSelector from './LanguageSelector';
 
 const PRESETS = [
   {
@@ -30,8 +29,6 @@ export default function TextInputPanel({
   onClear,
   onSubmit,
   isLoading,
-  selectedLanguage,
-  onSelectLanguage,
   error
 }) {
   const charCount = text.length;
@@ -83,14 +80,6 @@ export default function TextInputPanel({
             </button>
           )}
         </div>
-      </div>
-
-      <div style={{ margin: '0.75rem 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem' }}>
-        <LanguageSelector
-          selectedLanguage={selectedLanguage}
-          onSelectLanguage={onSelectLanguage}
-          disabled={isLoading}
-        />
       </div>
 
       <div className="btn-row">
