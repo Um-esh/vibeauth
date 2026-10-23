@@ -4,8 +4,6 @@ import PersonaSelector, { PERSONA_DEFAULTS, PERSONAS } from './components/Person
 import AttributeSliders from './components/AttributeSliders';
 import TextInputPanel from './components/TextInputPanel';
 import OutputPanel from './components/OutputPanel';
-import ComparisonDiff from './components/ComparisonDiff';
-import PreservationReport from './components/PreservationReport';
 import SourceAnalysisCard from './components/SourceAnalysisCard';
 import HistoryDrawer from './components/HistoryDrawer';
 import ErrorBanner from './components/ErrorBanner';
@@ -233,7 +231,6 @@ export default function App() {
                 modelInfo={modelInfo}
                 preservationReport={preservationReport}
                 diff={diff}
-                onViewDiff={() => setActiveTab('diff')}
               />
             </div>
 
@@ -243,26 +240,7 @@ export default function App() {
           </div>
         )}
 
-        {/* Tab 2: Comparison Diff */}
-        {activeTab === 'diff' && (
-          <ComparisonDiff
-            diff={diff}
-            originalText={inputText}
-            rewrittenText={rewrittenText}
-          />
-        )}
-
-        {/* Tab 3: Preservation Analysis */}
-        {activeTab === 'preservation' && (
-          <div>
-            <PreservationReport report={preservationReport} />
-            {sourceAnalysis && (
-              <SourceAnalysisCard sourceAnalysis={sourceAnalysis} />
-            )}
-          </div>
-        )}
-
-        {/* Tab 4: History */}
+        {/* History Tab */}
         {activeTab === 'history' && (
           <HistoryDrawer
             historyItems={historyItems}

@@ -14,8 +14,7 @@ export default function OutputPanel({
   processingTimeMs,
   modelInfo,
   preservationReport,
-  diff,
-  onViewDiff
+  diff
 }) {
   const [copied, setCopied] = useState(false);
   const [activeLangTab, setActiveLangTab] = useState('auto'); // 'en' or 'translated'
@@ -94,13 +93,6 @@ export default function OutputPanel({
               onClick={handleCopy}
             >
               {copied ? '✓ Copied' : 'Copy Text'}
-            </button>
-            <button
-              type="button"
-              className="btn-secondary btn-sm"
-              onClick={onViewDiff}
-            >
-              View Diff →
             </button>
             <button
               type="button"

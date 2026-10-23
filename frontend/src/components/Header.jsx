@@ -23,18 +23,6 @@ export default function Header({ activeTab, setActiveTab, systemStatus, historyC
             Transformer
           </button>
           <button
-            className={`nav-tab-btn ${activeTab === 'diff' ? 'active' : ''}`}
-            onClick={() => setActiveTab('diff')}
-          >
-            Comparison Diff
-          </button>
-          <button
-            className={`nav-tab-btn ${activeTab === 'preservation' ? 'active' : ''}`}
-            onClick={() => setActiveTab('preservation')}
-          >
-            Preservation Analysis
-          </button>
-          <button
             className={`nav-tab-btn ${activeTab === 'history' ? 'active' : ''}`}
             onClick={() => setActiveTab('history')}
           >

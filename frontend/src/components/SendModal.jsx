@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { parseVcfClient, downloadSampleVcf, SAMPLE_VCF_TEXT } from '../utils/vcfUtils';
+import { parseVcfClient } from '../utils/vcfUtils';
 import { api } from '../services/api';
 
 export default function SendModal({
@@ -130,16 +130,6 @@ export default function SendModal({
     reader.readAsText(file);
   };
 
-  // Load sample contacts
-  const handleLoadSampleContacts = () => {
-    const parsed = parseVcfClient(SAMPLE_VCF_TEXT);
-    setContacts(parsed);
-    setVcfFileName('Sample (4 contacts loaded)');
-    if (parsed.length > 0) {
-      handleSelectContact(parsed[0].id);
-    }
-  };
-
   // Parse comma-separated phone numbers
   const recipientNumbers = phoneInput
     .split(',')
@@ -160,17 +150,6 @@ export default function SendModal({
   const handleOpenWhatsApp = (phone, useWeb = true) => {
     const url = useWeb ? getWhatsAppWebUrl(phone) : getWhatsAppApiUrl(phone);
     window.open(url, '_blank', 'noopener,noreferrer');
-  };
-
-  // Fallback: Gmail direct compose link
-  const handleOpenGmailDirect = () => {
-    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(toEmail)}&su=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
-    window.open(gmailUrl, '_blank', 'noopener,noreferrer');
-  };
-
-  // Fallback: Default mail client link
-  const handleOpenMailto = () => {
-    window.location.href = `mailto:${encodeURIComponent(toEmail)}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
   };
 
   // Verify and Link Gmail Account (Using App Password or Token)
@@ -321,48 +300,6 @@ export default function SendModal({
           <button type="button" className="btn-close" onClick={onClose} aria-label="Close dialog">
             ✕
           </button>
-        </div>
-
-        {/* Contacts VCF Section */}
-        <div style={{ padding: '0.65rem 1.25rem', background: 'var(--bg-input)', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.6rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-            <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-primary)' }}>
-              📇 Contacts (.vcf):
-            </span>
-            <label className="btn-secondary btn-sm" style={{ cursor: 'pointer', margin: 0 }}>
-              <span>📁 {vcfFileName ? 'Change .vcf' : 'Upload contacts.vcf'}</span>
-              <input type="file" accept=".vcf,text/vcard" style={{ display: 'none' }} onChange={handleFileUpload} />
-            </label>
-            {contacts.length === 0 && (
-              <button type="button" className="btn-secondary btn-sm" onClick={handleLoadSampleContacts}>
-                Load Sample Contacts
-              </button>
-            )}
-            <button type="button" className="btn-secondary btn-sm" onClick={downloadSampleVcf} title="Download a template contacts.vcf file">
-              Download Template
-            </button>
-          </div>
-
-          {contacts.length > 0 && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                {contacts.length} contact{contacts.length > 1 ? 's' : ''}:
-              </span>
-              <select
-                className="preset-select"
-                style={{ fontSize: '0.8rem', padding: '0.3rem 0.5rem', minWidth: '180px' }}
-                value={selectedContactId}
-                onChange={(e) => handleSelectContact(e.target.value)}
-              >
-                <option value="">-- Choose Contact --</option>
-                {contacts.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.name} {c.org ? `(${c.org})` : ''}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
         </div>
 
         {/* Channel Navigation Tabs */}
@@ -779,27 +716,6 @@ export default function SendModal({
                         <span>Link Gmail to Send Directly</span>
                       </button>
                     )}
-
-                    {/* Secondary Fallback Buttons */}
-                    <button
-                      type="button"
-                      className="btn-secondary btn-sm"
-                      onClick={handleOpenGmailDirect}
-                      disabled={!emailBody.trim()}
-                      title="Fallback: opens Gmail web tab"
-                    >
-                      <span>Open in Gmail Tab</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      className="btn-secondary btn-sm"
-                      onClick={handleOpenMailto}
-                      disabled={!emailBody.trim()}
-                      title="Opens your system default email client"
-                    >
-                      <span>Default Mail</span>
-                    </button>
                   </div>
 
                   <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
@@ -817,6 +733,51 @@ export default function SendModal({
           {/* ======================================================== */}
           {activeTab === 'whatsapp' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              {/* Contacts (.vcf) Section (WhatsApp only) */}
+              <div
+                style={{
+                  padding: '0.65rem 0.85rem',
+                  background: 'var(--bg-input)',
+                  border: '1px solid var(--border)',
+                  borderRadius: 'var(--radius-sm)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  flexWrap: 'wrap',
+                  gap: '0.6rem'
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-primary)' }}>
+                    📇 Contacts (.vcf):
+                  </span>
+                  <label className="btn-secondary btn-sm" style={{ cursor: 'pointer', margin: 0 }}>
+                    <span>📁 {vcfFileName ? 'Change .vcf' : 'Upload contacts.vcf'}</span>
+                    <input type="file" accept=".vcf,text/vcard" style={{ display: 'none' }} onChange={handleFileUpload} />
+                  </label>
+                </div>
+
+                {contacts.length > 0 && (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                      {contacts.length} contact{contacts.length > 1 ? 's' : ''}:
+                    </span>
+                    <select
+                      className="preset-select"
+                      style={{ fontSize: '0.8rem', padding: '0.3rem 0.5rem', minWidth: '180px' }}
+                      value={selectedContactId}
+                      onChange={(e) => handleSelectContact(e.target.value)}
+                    >
+                      <option value="">-- Choose Contact --</option>
+                      {contacts.map((c) => (
+                        <option key={c.id} value={c.id}>
+                          {c.name} {c.org ? `(${c.org})` : ''}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+              </div>
               <div>
                 <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, marginBottom: '0.35rem', color: 'var(--text-secondary)' }}>
                   Recipient Phone Number(s):
