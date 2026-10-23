@@ -113,6 +113,59 @@ class EmailService:
             logger.exception(f"Failed to send email: {e}")
             raise RuntimeError(f"Email delivery failed: {str(e)}")
 
+    @staticmethod
+    def send_via_gmail_api(
+        access_token: str,
+        to_email: str | List[str],
+        subject: str,
+        body: str
+    ) -> Dict[str, Any]:
+        """Sends an email using Google's Gmail REST API with an OAuth2 access_token."""
+        import base64
+        import json
+        import urllib.request
+        import urllib.error
+
+        recipients = [to_email] if isinstance(to_email, str) else to_email
+        recipients = [r.strip() for r in recipients if r and r.strip()]
+        if not recipients:
+            raise ValueError("At least one recipient email address is required.")
+
+        msg = EmailMessage()
+        msg['Subject'] = subject or "Transformed Communication"
+        msg['To'] = ", ".join(recipients)
+        msg.set_content(body)
+
+        raw_b64 = base64.urlsafe_b64encode(msg.as_bytes()).decode('utf-8')
+        payload = json.dumps({'raw': raw_b64}).encode('utf-8')
+
+        req = urllib.request.Request(
+            'https://gmail.googleapis.com/gmail/v1/users/me/messages/send',
+            data=payload,
+            headers={
+                'Authorization': f'Bearer {access_token}',
+                'Content-Type': 'application/json'
+            }
+        )
+
+        try:
+            with urllib.request.urlopen(req, timeout=15) as resp:
+                resp_data = json.loads(resp.read().decode('utf-8'))
+                return {
+                    "success": True,
+                    "method": "gmail_api",
+                    "id": resp_data.get('id'),
+                    "recipients": recipients,
+                    "message": f"Email successfully dispatched via Gmail API to {', '.join(recipients)}."
+                }
+        except urllib.error.HTTPError as e:
+            err_body = e.read().decode('utf-8', errors='ignore')
+            logger.error(f"Gmail API HTTP error {e.code}: {err_body}")
+            raise RuntimeError(f"Gmail API error ({e.code}): {err_body}")
+        except Exception as e:
+            logger.exception(f"Gmail API request failure: {e}")
+            raise RuntimeError(f"Gmail API delivery failed: {str(e)}")
+
 
 class VcfParser:
     @staticmethod

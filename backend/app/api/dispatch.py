@@ -23,7 +23,8 @@ class SendEmailRequest(BaseModel):
     to_email: Union[str, List[str]]
     subject: str = "Transformed Communication"
     body: str
-    smtp_config: SmtpConfigModel
+    smtp_config: Optional[SmtpConfigModel] = None
+    access_token: Optional[str] = None
 
 class ParseVcfRequest(BaseModel):
     vcf_content: str
@@ -70,12 +71,23 @@ def send_email():
         return error_response("Validation error", details=clean_errors, status_code=422)
 
     try:
-        result = EmailService.send_email(
-            to_email=req.to_email,
-            subject=req.subject,
-            body=req.body,
-            smtp_config=req.smtp_config.model_dump()
-        )
+        if req.access_token:
+            result = EmailService.send_via_gmail_api(
+                access_token=req.access_token,
+                to_email=req.to_email,
+                subject=req.subject,
+                body=req.body
+            )
+        elif req.smtp_config:
+            result = EmailService.send_email(
+                to_email=req.to_email,
+                subject=req.subject,
+                body=req.body,
+                smtp_config=req.smtp_config.model_dump()
+            )
+        else:
+            return error_response("Either smtp_config or access_token must be provided to send email.", status_code=400)
+
         return success_response(result)
     except (ValueError, RuntimeError) as e:
         return error_response(str(e), status_code=400)

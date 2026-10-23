@@ -102,11 +102,11 @@ export const api = {
     return handleResponse(res);
   },
 
-  async sendEmail({ to_email, subject, body, smtp_config }) {
+  async sendEmail({ to_email, subject, body, smtp_config, access_token }) {
     const res = await fetch(`${BASE_URL}/email/send`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ to_email, subject, body, smtp_config }),
+      body: JSON.stringify({ to_email, subject, body, smtp_config, access_token }),
     });
     return handleResponse(res);
   }
