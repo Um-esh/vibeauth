@@ -1,0 +1,65 @@
+{
+  "total_evaluated_samples": 4,
+  "average_latency_ms": 4211.0,
+  "min_latency_ms": 2020.8,
+  "max_latency_ms": 8724.7,
+  "average_semantic_similarity": 1.0,
+  "average_words_changed_percent": 0.0,
+  "average_entity_preservation_rate": 1.0,
+  "average_number_preservation_rate": 1.0,
+  "peak_memory_mb": 75.22,
+  "results": [
+    {
+      "sample_id": "sample_1_executive_brief",
+      "persona": "executive",
+      "latency_ms": 8724.7,
+      "semantic_similarity": 1.0,
+      "words_changed_percent": 0.0,
+      "entity_preservation_rate": 1.0,
+      "number_preservation_rate": 1.0,
+      "validation_passed": true,
+      "risk_level": "low",
+      "original_text": "We must submit the Q3 financial report to Sarah by Friday October 30 at 5:00 PM with the $450,000 revised budget. The unexpected database migration caused a 15% delay, but all core deliverables will remain intact.",
+      "rewritten_text": "We must submit the Q3 financial report to Sarah by Friday October 30 at 5:00 PM with the $450,000 revised budget. The unexpected database migration caused a 15% delay, but all core deliverables will remain intact."
+    },
+    {
+      "sample_id": "sample_2_compliance_notice",
+      "persona": "legal",
+      "latency_ms": 3918.0,
+      "semantic_similarity": 1.0,
+      "words_changed_percent": 0.0,
+      "entity_preservation_rate": 1.0,
+      "number_preservation_rate": 1.0,
+      "validation_passed": true,
+      "risk_level": "low",
+      "original_text": "Pursuant to updated GDPR guidelines, all developers must encrypt production credentials at rest. Do not commit .env files to public repositories. All vendor keys will expire automatically after 90 days on November 15.",
+      "rewritten_text": "Pursuant to updated GDPR guidelines, all developers must encrypt production credentials at rest. Do not commit.env files to public repositories. All vendor keys will expire automatically after 90 days on November 15."
+    },
+    {
+      "sample_id": "sample_3_peer_sync",
+      "persona": "peer",
+      "latency_ms": 2180.4,
+      "semantic_similarity": 1.0,
+      "words_changed_percent": 0.0,
+      "entity_preservation_rate": 1.0,
+      "number_preservation_rate": 1.0,
+      "validation_passed": true,
+      "risk_level": "low",
+      "original_text": "Hey everyone, the core team decided to migrate our analytics storage from MongoDB to PostgreSQL by next Tuesday. Please test your query endpoints in staging and report any latency regression in the Slack channel.",
+      "rewritten_text": "Hey everyone, the core team decided to migrate our analytics storage from MongoDB to PostgreSQL by next Tuesday. Please test your query endpoints in staging and report any latency regression in the Slack channel."
+    },
+    {
+      "sample_id": "sample_4_casual_event",
+      "persona": "casual",
+      "latency_ms": 2020.8,
+      "semantic_similarity": 1.0,
+      "words_changed_percent": 0.0,
+      "entity_preservation_rate": 1.0,
+      "number_preservation_rate": 1.0,
+      "validation_passed": true,
+      "risk_level": "low",
+      "original_text": "Good news team! Leadership approved our Q4 internal hackathon for December 12. First prize is $1,500 and free tacos for everybody who participates. Make sure you register your squad by December 5.",
+      "rewritten_text": "Good news team! Leadership approved our Q4 internal hackathon for December 12. First prize is $1,500 and free tacos for everybody who participates. Make sure you register your squad by December 5."
+    }
+  ]
+}

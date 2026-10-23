@@ -1,0 +1,32 @@
+# Python
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.sqlite3
+instance/
+*.log
+
+# Models weight cache (do not commit gigabytes of binary weights)
+backend/models_cache/*
+!backend/models_cache/.gitkeep
+backend/models_cache/joblib/*
+!backend/models_cache/joblib/.gitkeep
+
+# Node / React
+node_modules/
+dist/
+build/
+.npm
+
+# Environment variables
+.env
+
+# Testing & IDE
+.pytest_cache/
+.coverage
+htmlcov/
+.idea/
+.vscode/
+*.swp
