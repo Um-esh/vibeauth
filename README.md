@@ -6,6 +6,14 @@ A complete, local, machine-learning-powered web application that rewrites text i
 
 ---
 
+## 🌟 Project Uniqueness
+
+> Unlike generic generative AI wrappers that send proprietary business communications to cloud APIs and risk hallucinations, **Instant Persona & Communication Transformer** is a 100% local, privacy-first NLP system with an independent fact-preservation guardrail engine. It doesn't just adapt tone across executive, peer, legal, and casual personas using on-device Sequence-to-Sequence models—it actively validates that every number, date, commitment, and named entity remains mathematically and semantically intact. Combined with real-time multi-language translation, vCard contact parsing, and zero-tab direct background dispatch via linked Gmail and WhatsApp, it bridges the gap between raw AI style transfer and secure, audit-ready enterprise communication.
+
+📖 **Looking for the presentation script and defense?** See the full [Presentation Guide](presentation_guide.md).
+
+---
+
 ## Architecture Overview
 
 ```
